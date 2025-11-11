@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us</title>
+  <style>
+    body {
+      background-color: #0d0d0d;
+      color: #f8f8f8;
+      font-family: "Poppins", sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    header {
+      background: #1a1a1a;
+      width: 100%;
+      text-align: center;
+      padding: 20px 0;
+      border-bottom: 2px solid #333;
+    }
+    h1 {
+      color: #00ffcc;
+      font-size: 2rem;
+    }
+    form {
+      background: #1e1e1e;
+      border-radius: 12px;
+      padding: 25px;
+      width: 90%;
+      max-width: 400px;
+      margin-top: 40px;
+      box-shadow: 0 0 15px rgba(0, 255, 204, 0.1);
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-size: 1rem;
+      color: #ccc;
+    }
+    input, textarea {
+      width: 100%;
+      background: #2a2a2a;
+      border: none;
+      border-radius: 8px;
+      color: #f1f1f1;
+      padding: 10px;
+      font-size: 1rem;
+      outline: none;
+    }
+    input:focus, textarea:focus {
+      box-shadow: 0 0 8px #00ffcc;
+    }
+    input[type="submit"] {
+      background: #00bcd4;
+      color: #fff;
+      margin-top: 15px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    input[type="submit"]:hover {
+      background: #0097a7;
+    }
+    .doodle {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-top: 20px;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .authors {
+      text-align: center;
+      color: #00ffcc;
+      font-size: 0.95rem;
+      margin-top: 15px;
+      letter-spacing: 0.5px;
+    }
+    footer {
+      margin-top: auto;
+      text-align: center;
+      padding: 15px;
+      font-size: 0.9rem;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Contact Us</h1>
+  </header>
+
+  <div class="doodle">📧 💬 💡 ✨</div>
+
+  <form action="#" method="post">
+    <label>Name:</label>
+    <input type="text" name="name">
+
+    <label>Email:</label>
+    <input type="email" name="email">
+
+    <label>Message:</label>
+    <textarea name="message" rows="4"></textarea>
+
+    <input type="submit" value="Send Message">
+  </form>
+
+  <div class="authors">
+    <p><strong>Developed by:</strong> Lokesh Shinde & Lavesh Garhwal</p>
+  </div>
+
+  <div class="doodle">🌌 🚀 🪄</div>
+
+  <footer>
+    © 2025 Web Project. All rights reserved.
+  </footer>
+</body>
+</html>
