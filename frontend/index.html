@@ -69,7 +69,6 @@
       box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
     }
 
-    /* Common style for video and product box */
     .content-box {
       width: 100%;
       aspect-ratio: 16 / 9;
@@ -120,6 +119,50 @@
       border-radius: 25px 25px 0 0;
       font-size: 14px;
     }
+
+    /* Modal styling */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .modal-content {
+      background: #111;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      width: 80%;
+      max-width: 400px;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    }
+
+    .close-btn {
+      background: #00bfff;
+      border: none;
+      color: #000;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    .theme-toggle {
+      cursor: pointer;
+      background: #00bfff;
+      color: #000;
+      padding: 8px 15px;
+      border-radius: 15px;
+      font-size: 14px;
+      margin-left: 10px;
+    }
   </style>
 </head>
 <body>
@@ -130,6 +173,7 @@
       <a href="#">About</a>
       <a href="#">Help</a>
       <a href="#">Settings</a>
+      <span class="theme-toggle">🌙 Dark</span>
     </nav>
   </header>
 
@@ -144,19 +188,16 @@
     </aside>
 
     <main>
-      <!-- Video box -->
       <div class="content-box">
-        <video controls>
+        <video id="productVideo" controls>
           <source src="video.mp4" type="video/mp4">
           Your browser does not support the video tag.
         </video>
       </div>
 
-      <!-- Button and terms -->
-      <button class="buy-btn">BUY NOW</button>
+      <button class="buy-btn" id="buyBtn">BUY NOW</button>
       <div class="terms">Terms and Conditions apply</div>
 
-      <!-- Product box -->
       <div class="content-box">
         Product Image / Preview
       </div>
@@ -166,5 +207,61 @@
   <footer>
     &copy; 2025 Website. All rights reserved.
   </footer>
+
+  <!-- Modal -->
+  <div class="modal" id="buyModal">
+    <div class="modal-content">
+      <h2>Thank You!</h2>
+      <p>Your interest has been noted. We’ll contact you soon.</p>
+      <button class="close-btn" id="closeModal">Close</button>
+    </div>
+  </div>
+
+  <script>
+    // Buy Button Modal
+    const buyBtn = document.getElementById("buyBtn");
+    const buyModal = document.getElementById("buyModal");
+    const closeModal = document.getElementById("closeModal");
+
+    buyBtn.addEventListener("click", () => {
+      buyModal.style.display = "flex";
+    });
+
+    closeModal.addEventListener("click", () => {
+      buyModal.style.display = "none";
+    });
+
+    window.addEventListener("click", (e) => {
+      if (e.target === buyModal) {
+        buyModal.style.display = "none";
+      }
+    });
+
+    // Theme Toggle
+    const toggleBtn = document.querySelector(".theme-toggle");
+    let darkMode = true;
+
+    toggleBtn.addEventListener("click", () => {
+      darkMode = !darkMode;
+      if (darkMode) {
+        document.body.style.backgroundColor = "#000";
+        document.body.style.color = "#fff";
+        toggleBtn.textContent = "🌙 Dark";
+        toggleBtn.style.background = "#00bfff";
+        toggleBtn.style.color = "#000";
+      } else {
+        document.body.style.backgroundColor = "#f5f5f5";
+        document.body.style.color = "#000";
+        toggleBtn.textContent = "☀️ Light";
+        toggleBtn.style.background = "#222";
+        toggleBtn.style.color = "#fff";
+      }
+    });
+
+    // Auto play/pause on hover
+    const video = document.getElementById("productVideo");
+    video.addEventListener("mouseenter", () => video.play());
+    video.addEventListener("mouseleave", () => video.pause());
+  </script>
 </body>
 </html>
