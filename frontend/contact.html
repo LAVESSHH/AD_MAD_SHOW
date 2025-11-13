@@ -82,6 +82,14 @@
       margin-top: 15px;
       letter-spacing: 0.5px;
     }
+    .authors a {
+      color: #00ffcc;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .authors a:hover {
+      text-decoration: underline;
+    }
     footer {
       margin-top: auto;
       text-align: center;
@@ -100,19 +108,22 @@
 
   <form action="#" method="post">
     <label>Name:</label>
-    <input type="text" name="name">
+    <input type="text" name="name" placeholder="Your Name">
 
     <label>Email:</label>
-    <input type="email" name="email">
+    <input type="email" name="email" placeholder="Your Email">
 
     <label>Message:</label>
-    <textarea name="message" rows="4"></textarea>
+    <textarea name="message" rows="4" placeholder="Write your message here..."></textarea>
 
     <input type="submit" value="Send Message">
   </form>
 
   <div class="authors">
     <p><strong>Developed by:</strong> Lokesh Shinde & Lavesh Garhwal</p>
+    <p><strong>Contact Gmail:</strong> 
+      <a href="mailto:digitalleague0@gmail.com">digitalleague0@gmail.com</a>
+    </p>
   </div>
 
   <div class="doodle">🌌 🚀 🪄</div>
@@ -122,3 +133,4 @@
   </footer>
 </body>
 </html>
+
