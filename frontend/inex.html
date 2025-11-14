@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Realme AI Assistant</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #000;
+      color: #fff;
+    }
+
+    header {
+      background-color: #111;
+      padding: 15px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #444;
+      border-radius: 0 0 25px 25px;
+    }
+
+    header .logo {
+      font-size: 22px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      color: #FFD700;
+    }
+
+    header nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 12px;
+      transition: color 0.3s;
+    }
+
+    header nav a:hover {
+      color: #00bfff;
+    }
+
+    .container {
+      display: flex;
+      padding: 20px;
+      gap: 20px;
+    }
+
+    aside {
+      width: 22%;
+      background-color: #111;
+      padding: 20px;
+      box-sizing: border-box;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    }
+
+    aside h3 {
+      border-bottom: 1px solid #444;
+      padding-bottom: 5px;
+    }
+
+    main {
+      width: 78%;
+      background-color: #111;
+      padding: 25px;
+      border-radius: 20px;
+      box-sizing: border-box;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    }
+
+    .content-box {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: 2px solid #777;
+      border-radius: 15px;
+      background-color: #000;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    video, img {
+      width: 100%;
+      height: 100%;
+      border-radius: 15px;
+      object-fit: cover;
+    }
+
+    .buy-btn {
+      background-color: #00bfff;
+      color: black;
+      padding: 20px 30px;
+      border: none;
+      border-radius: 30px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .buy-btn:hover {
+      background-color: #009acd;
+      transform: scale(1.05);
+    }
+
+    .terms {
+      margin-top: 12px;
+      font-size: 18px;
+      color: #aaa;
+    }
+
+    footer {
+      background-color: #111;
+      color: #888;
+      text-align: center;
+      padding: 15px;
+      margin-top: 25px;
+      border-radius: 25px 25px 0 0;
+      font-size: 14px;
+    }
+
+    /* Modal styling */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .modal-content {
+      background: #111;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      width: 80%;
+      max-width: 400px;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    }
+
+    .close-btn {
+      background: #00bfff;
+      border: none;
+      color: #000;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    .theme-toggle {
+      cursor: pointer;
+      background: #00bfff;
+      color: #000;
+      padding: 8px 15px;
+      border-radius: 15px;
+      font-size: 14px;
+      margin-left: 10px;
+    }
+
+    /* AI Chatbox */
+    #aiChat {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #111;
+      color: #fff;
+      border-radius: 15px;
+      width: 300px;
+      max-height: 400px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 0 15px rgba(0, 191, 255, 0.4);
+      overflow: hidden;
+      z-index: 999;
+    }
+
+    #aiMessages {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      font-size: 14px;
+    }
+
+    #aiInputContainer {
+      display: flex;
+      border-top: 1px solid #444;
+    }
+
+    #aiInput {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      outline: none;
+      background: #222;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    #aiSend {
+      padding: 10px 15px;
+      background: #00bfff;
+      color: #000;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .ai-msg {
+      margin: 5px 0;
+      padding: 8px;
+      border-radius: 10px;
+    }
+
+    .user-msg {
+      background: #00bfff;
+      color: #000;
+      align-self: flex-end;
+    }
+
+    .bot-msg {
+      background: #333;
+      color: #fff;
+      align-self: flex-start;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div style="display: flex; align-items: center;">
+      <span class="logo">realme</span>
+      <span style="color:#fff; font-size:16px; margin-left:20px; font-style: italic;">
+        <span style="color:#FFD700;">Upgrade</span> your life before your old phone <span style="color:#00bfff;">files a complaint!</span>
+      </span>
+    </div>
+    <nav>
+      <a href="contact.html">Contact Us</a>
+      <a href="about.html">About</a>
+      <a href="#">Help</a>
+      <a href="#">Settings</a>
+      <span class="theme-toggle">🌙 Dark</span>
+    </nav>
+  </header>
+
+  <div class="container">
+    <aside>
+      <h3>Specs</h3>
+      <p>Processor: MediaTek Dimensity 8350 Ultra</p>
+      <p>8GB RAM, 256GB SSD</p>
+      <p>1.5k OLED Quad Curved Display</p>
+      <p>5G</p>
+      <p>6000 mAh Lithium-ion Battery</p>
+      <h3>Price</h3>
+      <p>₹26,999</p>
+      <h3>Other Variants</h3>
+      <p>Red, Blue, Black</p>
+    </aside>
+
+    <main>
+      <div class="content-box">
+        <video id="productVideo" controls>
+          <source src="vid.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <button class="buy-btn" id="buyBtn">BUY NOW</button>
+      <div class="terms">Terms and Conditions apply</div>
+
+      <div class="content-box">
+        <img src="phone.png" alt="Product Preview">
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    &copy; 2025 Website. All rights reserved.
+  </footer>
+
+  <!-- Buy Modal -->
+  <div class="modal" id="buyModal">
+    <div class="modal-content">
+      <h2>Buy Now</h2>
+      <p>Enter your Gmail to receive updates:</p>
+      <input type="email" id="userEmail" placeholder="Enter your Gmail"
+        style="padding:10px; width:80%; border-radius:8px; border:none; outline:none;">
+      <br><br>
+      <button class="close-btn" id="submitEmail">Submit</button>
+    </div>
+  </div>
+
+  <!-- AI Chatbox -->
+  <div id="aiChat">
+    <div id="aiMessages"></div>
+    <div id="aiInputContainer">
+      <input type="text" id="aiInput" placeholder="Ask me anything about the phone...">
+      <button id="aiSend">Send</button>
+    </div>
+  </div>
+
+  <script>
+    // ---------------- Buy Modal ----------------
+    const buyBtn = document.getElementById("buyBtn");
+    const buyModal = document.getElementById("buyModal");
+    const submitEmail = document.getElementById("submitEmail");
+
+    buyBtn.addEventListener("click", () => buyModal.style.display = "flex");
+
+    submitEmail.addEventListener("click", () => {
+      const email = document.getElementById("userEmail").value.trim();
+      if(!email || !email.includes("@")) {
+        alert("Enter a valid Gmail!");
+        return;
+      }
+      alert("Email submitted: " + email);
+      buyModal.style.display = "none";
+    });
+
+    // ---------------- Theme Toggle ----------------
+    const toggleBtn = document.querySelector(".theme-toggle");
+    let darkMode = true;
+    toggleBtn.addEventListener("click", () => {
+      darkMode = !darkMode;
+      if(darkMode){
+        document.body.style.backgroundColor = "#000";
+        document.body.style.color = "#fff";
+        toggleBtn.textContent = "🌙 Dark";
+      } else {
+        document.body.style.backgroundColor = "#f5f5f5";
+        document.body.style.color = "#000";
+        toggleBtn.textContent = "☀️ Light";
+      }
+    });
+
+    // ---------------- Video hover ----------------
+    const video = document.getElementById("productVideo");
+    video.addEventListener("mouseenter", () => video.play());
+    video.addEventListener("mouseleave", () => video.pause());
+
+    // ---------------- Upgraded AI ----------------
+    const aiInput = document.getElementById("aiInput");
+    const aiSend = document.getElementById("aiSend");
+    const aiMessages = document.getElementById("aiMessages");
+
+    const aiResponses = [
+      {
+        keywords: ["specs", "specifications", "processor", "ram", "storage", "display", "battery"],
+        response: "This phone has MediaTek Dimensity 8350 Ultra, 8GB RAM, 256GB storage, 1.5k OLED Quad Curved Display, 5G, and a 6000 mAh battery."
+      },
+      {
+        keywords: ["price", "cost", "how much", "amount"],
+        response: "The price of this phone is ₹26,999."
+      },
+      {
+        keywords: ["colors", "color", "variants", "available colors", "available colour", "options"],
+        response: "This phone is available in Red, Blue, and Black variants."
+      },
+      {
+        keywords: ["battery", "power", "charge", "mAh", "long lasting", "duration"],
+        response: "It has a huge 6000 mAh Lithium-ion battery, enough for 2+ days of normal use."
+      },
+      {
+        keywords: ["camera", "photo", "photos", "photography", "camera quality"],
+        response: "The phone comes with a high-resolution quad camera setup for stunning photos."
+      },
+      {
+        keywords: ["buy", "order", "purchase", "how to buy", "buy now"],
+        response: "Click on the BUY NOW button to place your order! You can enter your email to get updates."
+      }
+    ];
+
+    function appendMessage(msg, sender){
+      const div = document.createElement("div");
+      div.className = "ai-msg " + (sender==="user" ? "user-msg" : "bot-msg");
+      div.textContent = msg;
+      aiMessages.appendChild(div);
+      aiMessages.scrollTop = aiMessages.scrollHeight;
+    }
+
+    function getAIResponse(input){
+      const question = input.toLowerCase();
+      for(const item of aiResponses){
+        for(const kw of item.keywords){
+          if(question.includes(kw)){
+            return item.response;
+          }
+        }
+      }
+      return "Sorry, I didn't understand. Try asking about specs, price, colors, battery, camera, or buying.";
+    }
+
+    aiSend.addEventListener("click", () => {
+      const question = aiInput.value.trim();
+      if(!question) return;
+      appendMessage(question, "user");
+      const answer = getAIResponse(question);
+      appendMessage(answer, "bot");
+      aiInput.value = "";
+    });
+
+    aiInput.addEventListener("keypress", e => {
+      if(e.key === "Enter") aiSend.click();
+    });
+  </script>
+
+</body>
+</html>
