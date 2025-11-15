@@ -1,40 +1,39 @@
-// backend/server.js
-const express = require("express");
-const path = require("path");
-const fs = require("fs");
+// server.js
+import express from "express";
+import fetch from "node-fetch";
+import cors from "cors";
+
 const app = express();
-const PORT = process.env.PORT || 3000;
-
+app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "../frontend")));
 
-// Route that receives email and saves it
-app.post("/buy", (req, res) => {
-  const { email } = req.body;
+// Your API key
+const API_KEY = "AIzaSyDcFC5Rf-slk8yPwe3eGzSAjE4y1dc2_rI";
 
-  if (!email || !email.includes("@")) {
-    return res.status(400).json({ message: "Invalid email!" });
+app.post("/chat", async (req, res) => {
+  const { message } = req.body;
+
+  try {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${API_KEY}`
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user", content: message }],
+        max_tokens: 200
+      })
+    });
+
+    const data = await response.json();
+    res.json({ reply: data.choices[0].message.content });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ reply: "Something went wrong." });
   }
-
-  // Folder where we’ll save emails
-  const dataDir = path.join(__dirname, "data");
-  const filePath = path.join(dataDir, "emails.txt");
-
-  // Create folder if it doesn’t exist
-  if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir);
-  }
-
-  // Save email to the file
-  const entry = `${new Date().toISOString()} - ${email}\n`;
-  fs.appendFile(filePath, entry, (err) => {
-    if (err) {
-      console.error("Error saving email:", err);
-      return res.status(500).json({ message: "Error saving email." });
-    }
-    console.log(`✅ New email saved: ${email}`);
-    res.json({ message: "✅ Your email has been saved. Thank you!" });
-  });
 });
 
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+const PORT = 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
